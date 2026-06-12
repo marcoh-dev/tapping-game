@@ -1,0 +1,21 @@
+import styled from "styled-components";
+
+export const StyledGameArea = styled.section`
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: var(--spacing-xlarge) var(--spacing-small) var(--spacing-xxlarge);
+  user-select: none;
+`;
+
+export const StyledGameTarget = styled.button`
+  all: unset;
+  border-radius: 50%;
+  background-color: var(--gray-900);
+  position: absolute;
+
+  opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
+  transition: opacity 150ms ease;
+
+  user-select: none;
+`;
