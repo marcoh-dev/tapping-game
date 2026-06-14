@@ -17,5 +17,8 @@ export const StyledGameTarget = styled.button`
   opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
   transition: opacity 150ms ease;
 
-  user-select: none;
+  &:focus-visible {
+    outline: var(--border-normal);
+    outline-offset: var(--outline-offset-normal);
+  }
 `;

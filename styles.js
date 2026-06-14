@@ -55,6 +55,8 @@ export default createGlobalStyle`
 	--border-small:var(--border-width-small) solid var(--border-color);
 	--border-normal:var(--border-width-normal) solid var(--border-color);
 
+	--outline-offset-small:1px;
+	--outline-offset-normal:2px;
 
 }
 
