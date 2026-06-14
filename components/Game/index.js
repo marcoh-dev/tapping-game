@@ -18,6 +18,10 @@ export default function Game() {
     setScore((prev) => prev + increment);
   }
 
+  function handleCountdownComplete() {
+    setIsCountdown(false);
+  }
+
   return (
     <StyledGameWrap>
       <StyledGameHeader>
@@ -31,7 +35,10 @@ export default function Game() {
       </StyledGameHeader>
       <StyledGameBody>
         {isCountdown && (
-          <GameCountdown startFrom={3} setIsCountdown={setIsCountdown} />
+          <GameCountdown
+            startFrom={3}
+            onCountdownComplete={handleCountdownComplete}
+          />
         )}
         {!isCountdown && (
           <GameLogic
