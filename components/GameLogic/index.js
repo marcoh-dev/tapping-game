@@ -30,12 +30,14 @@ function createTarget(
   gameAreaHeight,
   gameAreaScale
 ) {
-  for (let i = 0; i < 100; i++) {
+  let potentialNewTarget;
+
+  for (let i = 0; i < 1000; i++) {
     const targetSize =
       Math.random() * (gameAreaScale.maxSize - gameAreaScale.minSize) +
       gameAreaScale.minSize;
 
-    const potentialNewTarget = {
+    potentialNewTarget = {
       id: crypto.randomUUID(),
       left: random(0, gameAreaWidth - targetSize),
       top: random(0, gameAreaHeight - targetSize),
@@ -47,10 +49,11 @@ function createTarget(
       isOverlapping(potentialNewTarget, target, gameAreaScale.gap)
     );
 
-    if (!overlap) return potentialNewTarget;
+    if (!overlap) {
+      return potentialNewTarget;
+    }
   }
-
-  throw new Error("No valid position found");
+  return potentialNewTarget;
 }
 
 export default function GameLogic({ onTargetClick, isGameover }) {
