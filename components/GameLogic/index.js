@@ -135,6 +135,7 @@ export default function GameLogic({ onTargetClick, isGameover }) {
           key={target.id}
           $isHidden={target.removing}
           onClick={() => handleClick(target.id)}
+          aria-label="target"
           style={{
             left: target.left,
             top: target.top,
