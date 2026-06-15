@@ -24,6 +24,7 @@ export default function Game() {
       .filter((historyEntry) => historyEntry.isHighscore)
       .map((historyEntry) => historyEntry.score)
   );
+
   const [displayedHighscore, setDisplayedHighscore] = useState(null);
 
   useEffect(() => {
@@ -44,23 +45,14 @@ export default function Game() {
     if (score > 0) {
       const isHighscoreBeaten = score > highscore;
 
-      setScoreHistory((prev) => {
-        const updatedPrev = isHighscoreBeaten
-          ? prev.map((historyEntry) => ({
-              ...historyEntry,
-              isHighscore: false,
-            }))
-          : prev;
-
-        return [
-          ...updatedPrev,
-          {
-            score,
-            timestamp: Date.now(),
-            isHighscore: isHighscoreBeaten,
-          },
-        ];
-      });
+      setScoreHistory((prev) => [
+        ...prev,
+        {
+          score,
+          timestamp: Date.now(),
+          isHighscore: isHighscoreBeaten,
+        },
+      ]);
     }
   }
 
