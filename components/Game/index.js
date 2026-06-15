@@ -60,7 +60,7 @@ export default function Game() {
     if (isGameOver) {
       handleGameOver();
     }
-  }, [isGameOver, handleGameOver]);
+  }, [isGameOver]);
 
   function handleGameRestart() {
     setIsCountdown(true);
