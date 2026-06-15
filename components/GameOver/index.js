@@ -1,0 +1,48 @@
+import {
+  StyledGameOverWrap,
+  StyledGameOverSection,
+  StyledGameOverHeadline,
+  StyledGameOverScore,
+  StyledGameOverButtonSection,
+  StyledGameOverButton,
+  StyledGameOverButtons,
+} from "./GameOver.styled";
+
+export default function GameOver({
+  score,
+  highscore,
+  onGameRestart,
+  isHighscoreBeaten,
+}) {
+  return (
+    <StyledGameOverWrap>
+      <StyledGameOverSection>
+        <StyledGameOverHeadline>Your Score</StyledGameOverHeadline>
+        <StyledGameOverScore $isHighscoreBeaten={isHighscoreBeaten}>
+          {score}
+        </StyledGameOverScore>
+      </StyledGameOverSection>
+      {isHighscoreBeaten ? (
+        <StyledGameOverSection>
+          <StyledGameOverHeadline $isHighscoreBeaten={isHighscoreBeaten}>
+            New Highscore!
+          </StyledGameOverHeadline>
+        </StyledGameOverSection>
+      ) : (
+        highscore > 0 && (
+          <StyledGameOverSection>
+            <StyledGameOverHeadline>Your Highscore</StyledGameOverHeadline>
+            <StyledGameOverScore>{highscore}</StyledGameOverScore>
+          </StyledGameOverSection>
+        )
+      )}
+      <StyledGameOverButtonSection>
+        <StyledGameOverButtons>
+          <StyledGameOverButton type="button" onClick={onGameRestart}>
+            Try again
+          </StyledGameOverButton>
+        </StyledGameOverButtons>
+      </StyledGameOverButtonSection>
+    </StyledGameOverWrap>
+  );
+}

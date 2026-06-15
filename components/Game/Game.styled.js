@@ -10,14 +10,27 @@ export const StyledGameWrap = styled.div`
 
 export const StyledGameHeader = styled.section`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   border: var(--border-normal);
   border-radius: var(--border-radius-normal);
   padding: var(--spacing-small) var(--spacing-normal);
+  text-align: center;
+
+  grid-template-columns: ${({ $isGameOver }) =>
+    $isGameOver ? "1fr" : "repeat(3, 1fr)"};
+
+  h1 {
+    font-size: var(--headline-font-size-1);
+    margin: 0;
+    margin: 0;
+    line-height: 1em;
+    font-weight: inherit;
+    color: var(--gray-600);
+  }
 `;
 
 export const StyledGameBody = styled.section`
   flex-grow: 1;
   display: flex;
+  position: relative;
 `;
