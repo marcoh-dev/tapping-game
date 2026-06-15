@@ -21,4 +21,8 @@ export const StyledGameTarget = styled.button`
     outline: var(--border-normal);
     outline-offset: var(--outline-offset-normal);
   }
+
+  &:disabled {
+    background-color: var(--gray-600);
+  }
 `;
