@@ -2,17 +2,36 @@ import GameScore from "../GameScore";
 import GameTimer from "../GameTimer";
 import GameLogic from "../GameLogic";
 import GameCountdown from "../GameCountdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   StyledGameBody,
   StyledGameHeader,
   StyledGameWrap,
 } from "./Game.styled";
+import GameOver from "../GameOver";
+import useLocalStorageState from "use-local-storage-state";
 
 export default function Game() {
   const [isCountdown, setIsCountdown] = useState(true);
-  const [isGameover, setIsGameover] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [scoreHistory, setScoreHistory] = useLocalStorageState("scoreHistory", {
+    defaultValue: [],
+  });
   const [score, setScore] = useState(0);
+  const highscore = Math.max(
+    0,
+    ...scoreHistory
+      .filter((historyEntry) => historyEntry.isHighscore)
+      .map((historyEntry) => historyEntry.score)
+  );
+
+  const [displayedHighscore, setDisplayedHighscore] = useState(null);
+
+  useEffect(() => {
+    if (displayedHighscore === null) {
+      setDisplayedHighscore(highscore);
+    }
+  }, [highscore, displayedHighscore]);
 
   function handleTargetClick(increment) {
     setScore((prev) => prev + increment);
@@ -22,16 +41,52 @@ export default function Game() {
     setIsCountdown(false);
   }
 
+  function handleGameOver() {
+    if (score > 0) {
+      const isHighscoreBeaten = score > highscore;
+
+      setScoreHistory((prev) => [
+        ...prev,
+        {
+          score,
+          timestamp: Date.now(),
+          isHighscore: isHighscoreBeaten,
+        },
+      ]);
+    }
+  }
+
+  useEffect(() => {
+    if (isGameOver) {
+      handleGameOver();
+    }
+  }, [isGameOver]);
+
+  function handleGameRestart() {
+    setIsCountdown(true);
+    setIsGameOver(false);
+    setDisplayedHighscore(highscore);
+    setScore(0);
+  }
+
   return (
     <StyledGameWrap>
-      <StyledGameHeader>
-        <GameScore score={score} />
-        <GameTimer
-          duration={30}
-          isCountdown={isCountdown}
-          isGameover={isGameover}
-          onTimerComplete={setIsGameover}
-        />
+      <StyledGameHeader $isGameOver={isGameOver}>
+        {isGameOver ? (
+          <>
+            <h1>Game over</h1>
+          </>
+        ) : (
+          <>
+            <GameScore score={score} />
+            <GameTimer
+              duration={30}
+              isCountdown={isCountdown}
+              isGameOver={isGameOver}
+              onTimerComplete={setIsGameOver}
+            />
+          </>
+        )}
       </StyledGameHeader>
       <StyledGameBody>
         {isCountdown && (
@@ -43,7 +98,15 @@ export default function Game() {
         {!isCountdown && (
           <GameLogic
             onTargetClick={handleTargetClick}
-            isGameover={isGameover}
+            isGameOver={isGameOver}
+          />
+        )}
+        {isGameOver && (
+          <GameOver
+            score={score}
+            highscore={highscore}
+            onGameRestart={handleGameRestart}
+            isHighscoreBeaten={score > displayedHighscore}
           />
         )}
       </StyledGameBody>

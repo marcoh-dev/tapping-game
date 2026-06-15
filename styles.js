@@ -22,7 +22,12 @@ export default createGlobalStyle`
 	--gray-200: hsl(30, 0%, 84%);
 	--gray-100: hsl(30, 0%, 94%);
 
-	--warning-color:red;
+	--gray-200-80: hsla(30, 0%, 84%, 80%);
+
+	--green-light:#b2f2bb;
+	--green-dark:#9acfa2;
+	--gold-dark:#a27100;
+	--warning-color:#ff0000;
 
 	--text-font-family: ${inter.style.fontFamily};
 	--text-font-size-normal:1rem;
@@ -35,6 +40,9 @@ export default createGlobalStyle`
 	--headline-font-size-2:1.25rem;
 	--headline-line-height:1.3em;
 	--headline-letter-spacing:0.02em;
+
+	--gameover-score-font-size: 3rem;
+	--gameover-score-line-height: 4rem;
 
 	--spacing-small:0.5rem;
 	--spacing-normal:1rem;

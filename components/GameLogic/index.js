@@ -56,7 +56,7 @@ function createTarget(
   return potentialNewTarget;
 }
 
-export default function GameLogic({ onTargetClick, isGameover }) {
+export default function GameLogic({ onTargetClick, isGameOver }) {
   const ref = useRef(null);
   const targetCount = 3;
   const [targets, setTargets] = useState([]);
@@ -94,7 +94,7 @@ export default function GameLogic({ onTargetClick, isGameover }) {
   }, []);
 
   function handleClick(id) {
-    if (isGameover) return;
+    if (isGameOver) return;
 
     const gameArea = ref.current;
     if (!gameArea) {
@@ -139,6 +139,7 @@ export default function GameLogic({ onTargetClick, isGameover }) {
           $isHidden={target.removing}
           onClick={() => handleClick(target.id)}
           aria-label="target"
+          disabled={isGameOver}
           style={{
             left: target.left,
             top: target.top,
