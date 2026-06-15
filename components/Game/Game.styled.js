@@ -22,7 +22,6 @@ export const StyledGameHeader = styled.section`
   h1 {
     font-size: var(--headline-font-size-1);
     margin: 0;
-    margin: 0;
     line-height: 1em;
     font-weight: inherit;
     color: var(--gray-600);
