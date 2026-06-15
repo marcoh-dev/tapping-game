@@ -7,13 +7,13 @@ import {
 export default function GameTimer({
   duration = 30,
   isCountdown,
-  isGameOver,
+  isGameover,
   onTimerComplete,
 }) {
   const [timeLeft, setTimeLeft] = useState(duration * 1000);
 
   useEffect(() => {
-    if (!isCountdown && !isGameOver) {
+    if (!isCountdown && !isGameover) {
       const endTime = Date.now() + duration * 1000;
 
       const interval = setInterval(() => {
@@ -29,7 +29,7 @@ export default function GameTimer({
 
       return () => clearInterval(interval);
     }
-  }, [duration, onTimerComplete, isCountdown, isGameOver]);
+  }, [duration, onTimerComplete, isCountdown, isGameover]);
 
   const seconds = Math.floor(timeLeft / 1000);
   const milliseconds = timeLeft % 1000;
