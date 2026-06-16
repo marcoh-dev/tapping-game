@@ -1,4 +1,5 @@
 import Game from "@/components/Game";
+import Header from "@/components/Header";
 import Head from "next/head";
 
 export default function HomePage() {
@@ -7,9 +8,8 @@ export default function HomePage() {
       <Head>
         <title>tapping game</title>
       </Head>
-      <main>
-        <Game />
-      </main>
+      <Header />
+      <main></main>
     </>
   );
 }
