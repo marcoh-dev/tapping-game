@@ -1,68 +1,14 @@
 import { useRef, useEffect, useState } from "react";
 import { StyledGameArea, StyledGameTarget } from "./GameLogic.styled";
-
-function random(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-function getScale(width, height) {
-  const unit = Math.min(width, height);
-
-  return {
-    gap: unit * 0.05,
-    minSize: unit * 0.1,
-    maxSize: unit * 0.25,
-  };
-}
-
-function isOverlapping(a, b, gap) {
-  return !(
-    a.left + a.size + gap < b.left ||
-    a.left > b.left + b.size + gap ||
-    a.top + a.size + gap < b.top ||
-    a.top > b.top + b.size + gap
-  );
-}
-
-function createTarget(
-  existingTargets,
-  gameAreaWidth,
-  gameAreaHeight,
-  gameAreaScale
-) {
-  let potentialNewTarget;
-
-  for (let i = 0; i < 1000; i++) {
-    const targetSize =
-      Math.random() * (gameAreaScale.maxSize - gameAreaScale.minSize) +
-      gameAreaScale.minSize;
-
-    potentialNewTarget = {
-      id: crypto.randomUUID(),
-      left: random(0, gameAreaWidth - targetSize),
-      top: random(0, gameAreaHeight - targetSize),
-      size: targetSize,
-      removing: true,
-    };
-
-    const overlap = existingTargets.some((target) =>
-      isOverlapping(potentialNewTarget, target, gameAreaScale.gap)
-    );
-
-    if (!overlap) {
-      return potentialNewTarget;
-    }
-  }
-  return potentialNewTarget;
-}
+import { createTarget, getScale } from "@/utils/gameHelper";
 
 export default function GameLogic({ onTargetClick, isGameOver }) {
-  const ref = useRef(null);
+  const gameAreaRef = useRef(null);
   const targetCount = 3;
   const [targets, setTargets] = useState([]);
 
   useEffect(() => {
-    const gameArea = ref.current;
+    const gameArea = gameAreaRef.current;
     if (!gameArea) {
       return;
     }
@@ -96,7 +42,7 @@ export default function GameLogic({ onTargetClick, isGameOver }) {
   function handleClick(id) {
     if (isGameOver) return;
 
-    const gameArea = ref.current;
+    const gameArea = gameAreaRef.current;
     if (!gameArea) {
       return;
     }
@@ -132,7 +78,7 @@ export default function GameLogic({ onTargetClick, isGameOver }) {
   }
 
   return (
-    <StyledGameArea ref={ref}>
+    <StyledGameArea ref={gameAreaRef}>
       {targets.map((target) => (
         <StyledGameTarget
           key={target.id}
