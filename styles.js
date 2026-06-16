@@ -103,10 +103,12 @@ h1, h2 {
 
 h1 {
 	font-size:var(--headline-font-size-1);
+	margin:0;
 }
 
 h2 {
 	font-size:var(--headline-font-size-2);
+	margin:0;
 }
 
 p {
