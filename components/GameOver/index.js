@@ -1,5 +1,5 @@
 import {
-  StyledButton,
+  StyledButtonGreen,
   StyledButtons,
   StyledButtonSection,
 } from "../global/Buttons.styled";
@@ -40,9 +40,9 @@ export default function GameOver({
       )}
       <StyledButtonSection>
         <StyledButtons>
-          <StyledButton type="button" onClick={onGameRestart}>
+          <StyledButtonGreen type="button" onClick={onGameRestart}>
             Try again
-          </StyledButton>
+          </StyledButtonGreen>
         </StyledButtons>
       </StyledButtonSection>
     </StyledGameOverWrap>

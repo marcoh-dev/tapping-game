@@ -24,7 +24,7 @@ export default function HomePage() {
             possible before the time runs out.
           </p>
           <p>
-            Each tapped target increase your score. Try beating your own
+            Each tapped target increases your score. Try beating your own
             highscore!
           </p>
           <p>
