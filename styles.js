@@ -26,6 +26,10 @@ export default createGlobalStyle`
 
 	--green-light:#b2f2bb;
 	--green-dark:#9acfa2;
+	--yellow-light:#ffec99;
+	--yellow-dark:#e3d184;
+	--red-light:#ffc9c9;
+	--red-dark:#dca4a4;
 	--gold-dark:#a27100;
 	--warning-color:#ff0000;
 
