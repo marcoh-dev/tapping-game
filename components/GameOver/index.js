@@ -1,5 +1,6 @@
 import {
   StyledButtonGreen,
+  StyledButtonRed,
   StyledButtons,
   StyledButtonSection,
 } from "../global/Buttons.styled";
@@ -9,6 +10,7 @@ import {
   StyledGameOverHeadline,
   StyledGameOverScore,
 } from "./GameOver.styled";
+import Link from "next/link";
 
 export default function GameOver({
   score,
@@ -43,6 +45,9 @@ export default function GameOver({
           <StyledButtonGreen type="button" onClick={onGameRestart}>
             Try again
           </StyledButtonGreen>
+          <StyledButtonRed as={Link} href="/">
+            Quit
+          </StyledButtonRed>
         </StyledButtons>
       </StyledButtonSection>
     </StyledGameOverWrap>
