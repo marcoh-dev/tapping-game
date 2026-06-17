@@ -2,7 +2,11 @@ import { useRef, useEffect, useState } from "react";
 import { StyledGameArea, StyledGameTarget } from "./GameLogic.styled";
 import { createTarget, getScale } from "@/utils/gameHelper";
 
-export default function GameLogic({ onTargetClick, isGameOver }) {
+export default function GameLogic({
+  onTargetClick,
+  isGameMenuOpen,
+  isGameOver,
+}) {
   const gameAreaRef = useRef(null);
   const targetCount = 3;
   const [targets, setTargets] = useState([]);
@@ -40,7 +44,7 @@ export default function GameLogic({ onTargetClick, isGameOver }) {
   }, []);
 
   function handleClick(id) {
-    if (isGameOver) return;
+    if (isGameOver || isGameMenuOpen) return;
 
     const gameArea = gameAreaRef.current;
     if (!gameArea) {
@@ -85,7 +89,7 @@ export default function GameLogic({ onTargetClick, isGameOver }) {
           $isHidden={target.removing}
           onClick={() => handleClick(target.id)}
           aria-label="target"
-          disabled={isGameOver}
+          disabled={isGameOver || isGameMenuOpen}
           style={{
             left: target.left,
             top: target.top,

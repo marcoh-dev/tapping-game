@@ -36,10 +36,16 @@ export default function GameTimer({
 
   return (
     <StyledGameTimerSection $isLastFiveSeconds={timeLeft <= 5000}>
-      <span>
-        <StyledGameTimerSecond>{seconds}</StyledGameTimerSecond>
-        {!isCountdown && <>,{milliseconds.toString().padStart(3, "0")}</>}
-      </span>
+      {isCountdown ? (
+        <span>
+          <StyledGameTimerSecond>{duration}</StyledGameTimerSecond>
+        </span>
+      ) : (
+        <span>
+          <StyledGameTimerSecond>{seconds}</StyledGameTimerSecond>,
+          {milliseconds.toString().padStart(3, "0")}
+        </span>
+      )}
     </StyledGameTimerSection>
   );
 }

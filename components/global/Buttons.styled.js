@@ -6,7 +6,8 @@ export const StyledButtonSection = styled.section`
   gap: 0;
   text-align: center;
   flex-grow: 1;
-  justify-content: flex-end;
+  justify-content: ${({ $alignBottom }) =>
+    $alignBottom ? "flex-end" : "flex-start"};
 `;
 
 export const StyledButtons = styled.div`
@@ -39,5 +40,21 @@ export const StyledButtonGreen = styled(StyledButton)`
 
   &:hover {
     background-color: var(--green-dark);
+  }
+`;
+
+export const StyledButtonYellow = styled(StyledButton)`
+  background-color: var(--yellow-light);
+
+  &:hover {
+    background-color: var(--yellow-dark);
+  }
+`;
+
+export const StyledButtonRed = styled(StyledButton)`
+  background-color: var(--red-light);
+
+  &:hover {
+    background-color: var(--red-dark);
   }
 `;
