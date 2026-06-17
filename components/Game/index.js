@@ -97,8 +97,8 @@ export default function Game() {
               aria-label={isGameMenuOpen ? "Close Game Menu" : "Open Game Menu"}
             >
               <Image
-                height="50"
-                width="0"
+                height={50}
+                width={0}
                 alt=""
                 src={
                   isGameMenuOpen
