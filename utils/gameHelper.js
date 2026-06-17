@@ -61,7 +61,6 @@ export function createFixedPositionTarget(
   { top: targetPercentageTop, left: targetPercentageLeft }
 ) {
   let potentialNewTarget;
-  console.log(targetPercentageTop);
 
   for (let i = 0; i < 1000; i++) {
     const targetSize =

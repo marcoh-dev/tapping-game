@@ -1,7 +1,7 @@
 import Game from "@/components/Game";
 import Head from "next/head";
 
-export default function HomePage() {
+export default function GamePage() {
   return (
     <>
       <Head>
