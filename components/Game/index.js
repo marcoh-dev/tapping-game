@@ -10,10 +10,15 @@ import {
 } from "./Game.styled";
 import GameOver from "../GameOver";
 import useLocalStorageState from "use-local-storage-state";
+import { StyledGameMenuButton } from "../GameMenu/GameMenu.styled";
+import GameMenu from "../GameMenu";
+import Image from "next/image";
 
 export default function Game() {
   const [isCountdown, setIsCountdown] = useState(true);
+  const [resetCountdown, setResetCountdown] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isGameMenuOpen, setIsGameMenuOpen] = useState(false);
   const [scoreHistory, setScoreHistory] = useLocalStorageState("scoreHistory", {
     defaultValue: [],
   });
@@ -42,9 +47,9 @@ export default function Game() {
   }
 
   function handleGameOver() {
+    setIsGameMenuOpen(false);
     if (score > 0) {
       const isHighscoreBeaten = score > highscore;
-
       setScoreHistory((prev) => [
         ...prev,
         {
@@ -63,7 +68,9 @@ export default function Game() {
   }, [isGameOver]);
 
   function handleGameRestart() {
+    setResetCountdown((prev) => prev + 1);
     setIsCountdown(true);
+    setIsGameMenuOpen(false);
     setIsGameOver(false);
     setDisplayedHighscore(highscore);
     setScore(0);
@@ -85,6 +92,21 @@ export default function Game() {
               isGameOver={isGameOver}
               onTimerComplete={setIsGameOver}
             />
+            <StyledGameMenuButton
+              onClick={() => setIsGameMenuOpen(!isGameMenuOpen)}
+              aria-label={isGameMenuOpen ? "Close Game Menu" : "Open Game Menu"}
+            >
+              <Image
+                height={50}
+                width={0}
+                alt=""
+                src={
+                  isGameMenuOpen
+                    ? "/icons/menu-close.svg"
+                    : "/icons/menu-open.svg"
+                }
+              />
+            </StyledGameMenuButton>
           </>
         )}
       </StyledGameHeader>
@@ -92,6 +114,7 @@ export default function Game() {
         {isCountdown && (
           <GameCountdown
             startFrom={3}
+            resetCountdown={resetCountdown}
             onCountdownComplete={handleCountdownComplete}
           />
         )}
@@ -99,8 +122,10 @@ export default function Game() {
           <GameLogic
             onTargetClick={handleTargetClick}
             isGameOver={isGameOver}
+            isGameMenuOpen={isGameMenuOpen}
           />
         )}
+        {isGameMenuOpen && <GameMenu onGameRestart={handleGameRestart} />}
         {isGameOver && (
           <GameOver
             score={score}
