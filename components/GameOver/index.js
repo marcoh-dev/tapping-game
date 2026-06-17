@@ -1,11 +1,13 @@
 import {
+  StyledButtonGreen,
+  StyledButtons,
+  StyledButtonSection,
+} from "../global/Buttons.styled";
+import {
   StyledGameOverWrap,
   StyledGameOverSection,
   StyledGameOverHeadline,
   StyledGameOverScore,
-  StyledGameOverButtonSection,
-  StyledGameOverButton,
-  StyledGameOverButtons,
 } from "./GameOver.styled";
 
 export default function GameOver({
@@ -36,13 +38,13 @@ export default function GameOver({
           </StyledGameOverSection>
         )
       )}
-      <StyledGameOverButtonSection>
-        <StyledGameOverButtons>
-          <StyledGameOverButton type="button" onClick={onGameRestart}>
+      <StyledButtonSection>
+        <StyledButtons>
+          <StyledButtonGreen type="button" onClick={onGameRestart}>
             Try again
-          </StyledGameOverButton>
-        </StyledGameOverButtons>
-      </StyledGameOverButtonSection>
+          </StyledButtonGreen>
+        </StyledButtons>
+      </StyledButtonSection>
     </StyledGameOverWrap>
   );
 }
