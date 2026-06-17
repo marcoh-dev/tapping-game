@@ -4,7 +4,11 @@ import {
   StyledGameCountdownWrap,
 } from "./GameCountdown.styled";
 
-export default function GameCountdown({ startFrom = 3, onCountdownComplete }) {
+export default function GameCountdown({
+  startFrom = 3,
+  resetCountdown,
+  onCountdownComplete,
+}) {
   const [countdown, setCountdown] = useState(startFrom);
   useEffect(() => {
     if (countdown > 0) {
@@ -16,6 +20,10 @@ export default function GameCountdown({ startFrom = 3, onCountdownComplete }) {
       onCountdownComplete();
     }
   }, [countdown, onCountdownComplete]);
+
+  useEffect(() => {
+    setCountdown(startFrom);
+  }, [startFrom, resetCountdown]);
 
   return (
     <StyledGameCountdownWrap>

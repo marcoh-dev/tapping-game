@@ -38,7 +38,7 @@ export default function GameOver({
           </StyledGameOverSection>
         )
       )}
-      <StyledButtonSection>
+      <StyledButtonSection $alignBottom>
         <StyledButtons>
           <StyledButtonGreen type="button" onClick={onGameRestart}>
             Try again

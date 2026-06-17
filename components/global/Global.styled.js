@@ -10,6 +10,7 @@ export const StyledWrap = styled.section`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-large);
+  flex-grow: 1;
 `;
 
 export const StyledTextpageHeader = styled.header`
