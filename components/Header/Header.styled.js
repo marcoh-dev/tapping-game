@@ -5,6 +5,7 @@ export const StyledHeader = styled.header`
   padding: var(--spacing-small);
 
   h1 {
+    user-select: text;
     font-size: var(--gameover-score-font-size);
     line-height: var(--gameover-score-line-height);
     text-align: center;
