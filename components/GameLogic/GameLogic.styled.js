@@ -9,12 +9,12 @@ export const StyledGameArea = styled.section`
 `;
 
 export const StyledGameTarget = styled.button`
-  all: unset;
   border-radius: 50%;
   background-color: var(--gray-900);
   position: absolute;
 
   opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
+  pointer-events: ${({ $isHidden }) => ($isHidden ? "none" : "auto")};
   transition: opacity 150ms ease;
 
   &:focus-visible {
@@ -24,5 +24,12 @@ export const StyledGameTarget = styled.button`
 
   &:disabled {
     background-color: var(--gray-600);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--gray-100);
+    &:disabled {
+      background-color: var(--gray-400);
+    }
   }
 `;

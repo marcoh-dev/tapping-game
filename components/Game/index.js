@@ -12,7 +12,8 @@ import GameOver from "../GameOver";
 import useLocalStorageState from "use-local-storage-state";
 import { StyledGameMenuButton } from "../GameMenu/GameMenu.styled";
 import GameMenu from "../GameMenu";
-import Image from "next/image";
+import MenuOpenIcon from "@/icons/menu-open.svg";
+import MenuCloseIcon from "@/icons/menu-close.svg";
 
 export default function Game() {
   const [isCountdown, setIsCountdown] = useState(true);
@@ -96,16 +97,7 @@ export default function Game() {
               onClick={() => setIsGameMenuOpen(!isGameMenuOpen)}
               aria-label={isGameMenuOpen ? "Close Game Menu" : "Open Game Menu"}
             >
-              <Image
-                height={50}
-                width={0}
-                alt=""
-                src={
-                  isGameMenuOpen
-                    ? "/icons/menu-close.svg"
-                    : "/icons/menu-open.svg"
-                }
-              />
+              {isGameMenuOpen ? <MenuCloseIcon /> : <MenuOpenIcon />}
             </StyledGameMenuButton>
           </>
         )}
