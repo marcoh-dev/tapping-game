@@ -5,6 +5,7 @@ export const StyledHeader = styled.header`
   padding: var(--spacing-small);
 
   h1 {
+    user-select: text;
     font-size: var(--gameover-score-font-size);
     line-height: var(--gameover-score-line-height);
     text-align: center;
@@ -18,6 +19,11 @@ export const StyledHeader = styled.header`
 export const StyledHeadline = styled.h1`
   color: ${({ $allTargetsClicked }) =>
     $allTargetsClicked ? "var(--gold-dark)" : "inherit"};
+
+  @media (prefers-color-scheme: dark) {
+    color: ${({ $allTargetsClicked }) =>
+      $allTargetsClicked ? "var(--gold-light)" : "inherit"};
+  }
 `;
 
 export const StyledHeaderGameArea = styled.section`

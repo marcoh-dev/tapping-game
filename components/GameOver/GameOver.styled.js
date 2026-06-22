@@ -12,6 +12,10 @@ export const StyledGameOverWrap = styled.section`
   display: flex;
   flex-direction: column;
   gap: var(--spacing-large);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--gray-800-80);
+  }
 `;
 
 export const StyledGameOverSection = styled.section`
@@ -26,6 +30,11 @@ export const StyledGameOverHeadline = styled.h2`
   font-weight: inherit;
   color: ${({ $isHighscoreBeaten }) =>
     $isHighscoreBeaten ? "var(--gold-dark)" : "inherit"};
+
+  @media (prefers-color-scheme: dark) {
+    color: ${({ $isHighscoreBeaten }) =>
+      $isHighscoreBeaten ? "var(--gold-light)" : "inherit"};
+  }
 `;
 
 export const StyledGameOverScore = styled.p`
@@ -35,4 +44,9 @@ export const StyledGameOverScore = styled.p`
 
   color: ${({ $isHighscoreBeaten }) =>
     $isHighscoreBeaten ? "var(--gold-dark)" : "inherit"};
+
+  @media (prefers-color-scheme: dark) {
+    color: ${({ $isHighscoreBeaten }) =>
+      $isHighscoreBeaten ? "var(--gold-light)" : "inherit"};
+  }
 `;

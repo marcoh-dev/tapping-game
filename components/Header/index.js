@@ -18,7 +18,7 @@ export default function Header() {
       return;
     }
 
-    const targetPercentagePositions = [
+    const targetPositionsInPercent = [
       { top: 3, left: 12 },
       { top: 55, left: 5 },
       { top: 12, left: 70 },
@@ -31,14 +31,14 @@ export default function Header() {
 
     const initialTargets = [];
 
-    for (let i = 0; i < targetPercentagePositions.length; i++) {
+    for (let i = 0; i < targetPositionsInPercent.length; i++) {
       initialTargets.push(
         createFixedPositionTarget(
           initialTargets,
           gameAreaWidth,
           gameAreaHeight,
           gameAreaScale,
-          targetPercentagePositions[i]
+          targetPositionsInPercent[i]
         )
       );
     }
