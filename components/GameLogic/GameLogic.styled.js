@@ -14,6 +14,7 @@ export const StyledGameTarget = styled.button`
   position: absolute;
 
   opacity: ${({ $isHidden }) => ($isHidden ? 0 : 1)};
+  pointer-events: ${({ $isHidden }) => ($isHidden ? "none" : "auto")};
   transition: opacity 150ms ease;
 
   &:focus-visible {
