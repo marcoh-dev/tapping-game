@@ -17,7 +17,7 @@ export const StyledTextpageHeader = styled.header`
   display: flex;
   gap: var(--spacing-normal);
   padding: var(--spacing-normal) 0;
-  border-bottom: 2px solid var(--gray-200);
+  border-bottom: var(--border-normal-lighter);
   margin: 0 var(--spacing-normal);
 `;
 

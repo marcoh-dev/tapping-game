@@ -18,6 +18,11 @@ export const StyledHeader = styled.header`
 export const StyledHeadline = styled.h1`
   color: ${({ $allTargetsClicked }) =>
     $allTargetsClicked ? "var(--gold-dark)" : "inherit"};
+
+  @media (prefers-color-scheme: dark) {
+    color: ${({ $allTargetsClicked }) =>
+      $allTargetsClicked ? "var(--gold-light)" : "inherit"};
+  }
 `;
 
 export const StyledHeaderGameArea = styled.section`

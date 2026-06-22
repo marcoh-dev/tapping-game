@@ -9,7 +9,6 @@ export const StyledGameArea = styled.section`
 `;
 
 export const StyledGameTarget = styled.button`
-  all: unset;
   border-radius: 50%;
   background-color: var(--gray-900);
   position: absolute;
@@ -24,5 +23,12 @@ export const StyledGameTarget = styled.button`
 
   &:disabled {
     background-color: var(--gray-600);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--gray-100);
+    &:disabled {
+      background-color: var(--gray-400);
+    }
   }
 `;
