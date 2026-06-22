@@ -6,7 +6,6 @@ import {
 } from "../GameOver/GameOver.styled";
 
 export const StyledGameMenuButton = styled.button`
-  all: unset;
   margin-left: auto;
 
   border-radius: var(--border-radius-small);
@@ -16,7 +15,8 @@ export const StyledGameMenuButton = styled.button`
     outline-offset: var(--outline-offset-normal);
   }
 
-  img {
+  img,
+  svg {
     height: 1.75rem;
     width: auto;
   }

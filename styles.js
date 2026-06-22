@@ -23,13 +23,25 @@ export default createGlobalStyle`
 	--gray-100: hsl(30, 0%, 94%);
 
 	--gray-200-80: hsla(30, 0%, 84%, 80%);
+	--gray-800-80: hsla(30, 0%, 24%, 80%);
 
-	--green-light:#b2f2bb;
-	--green-dark:#9acfa2;
-	--yellow-light:#ffec99;
-	--yellow-dark:#e3d184;
-	--red-light:#ffc9c9;
-	--red-dark:#dca4a4;
+	--green-800: hsl(129, 32%, 38%);
+	--green-700: hsl(129, 32%, 48%);
+	--green-300: hsl(128, 71%, 72%);
+	--green-200: hsl(128, 71%, 82%);
+
+	--yellow-800: hsl(49, 62%, 37%);
+	--yellow-700: hsl(49, 62%, 47%);
+	--yellow-300: hsl(49, 100%, 70%);
+	--yellow-200: hsl(49, 100%, 80%);
+
+	--red-800: hsl(0, 59%, 45%);
+	--red-700: hsl(0, 59%, 55%);
+	--red-300: hsl(0, 100%, 79%);
+	--red-200: hsl(0, 100%, 89%);
+
+	
+	--gold-light:#ffb100;
 	--gold-dark:#a27100;
 	--warning-color:#ff0000;
 
@@ -63,13 +75,23 @@ export default createGlobalStyle`
 	--border-width-small:1px;
 	--border-width-normal:2px;
 	--border-color:var(--gray-900);
+	--border-color-lighter:var(--gray-200);
 
 	--border-small:var(--border-width-small) solid var(--border-color);
 	--border-normal:var(--border-width-normal) solid var(--border-color);
+	--border-small-lighter:var(--border-width-small) solid var(--border-color-lighter);
+	--border-normal-lighter:var(--border-width-normal) solid var(--border-color-lighter);
 
 	--outline-offset-small:1px;
 	--outline-offset-normal:2px;
 
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+	--border-color:var(--gray-100);
+	--border-color-lighter:var(--gray-800);
+  }
 }
 
 body {
@@ -84,6 +106,11 @@ body {
 	color:var(--gray-900);
 	background-color: var(--gray-100);
     min-height: 100vh;
+
+	@media (prefers-color-scheme: dark) {
+		color:var(--gray-100);
+		background-color: var(--gray-900);
+	}
 
 }
 
@@ -126,9 +153,10 @@ main {
   flex-grow: 1;
 }
 
-button,
-label {
-	cursor:pointer;
+
+svg {
+	max-width:100%;
+	display:block;
 }
 
 a {
@@ -136,12 +164,18 @@ a {
 }
 
 button {
+	all:unset;
 	color:inherit;
 	background-color:inherit;
 
     &:disabled {
         cursor: not-allowed;
     }
+}
+
+button,
+label {
+	cursor:pointer;
 }
 
 `;
