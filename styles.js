@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import { Inter } from "@next/font/google";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,13 +13,17 @@ export default createGlobalStyle`
 	font-size:16px;
 
     --gray-900: hsl(30, 0%, 14%);
+	--gray-850: hsl(30, 0%, 19%);
 	--gray-800: hsl(30, 0%, 24%);
+	--gray-750: hsl(30, 0%, 29%);
 	--gray-700: hsl(30, 0%, 34%);
 	--gray-600: hsl(30, 0%, 44%);
 	--gray-500: hsl(30, 0%, 54%);
 	--gray-400: hsl(30, 0%, 64%);
 	--gray-300: hsl(30, 0%, 74%);
+	--gray-250: hsl(30, 0%, 79%);
 	--gray-200: hsl(30, 0%, 84%);
+	--gray-150: hsl(30, 0%, 89%);
 	--gray-100: hsl(30, 0%, 94%);
 
 	--gray-200-80: hsla(30, 0%, 84%, 80%);
@@ -47,7 +51,7 @@ export default createGlobalStyle`
 
 	--text-font-family: ${inter.style.fontFamily};
 	--text-font-size-normal:1rem;
-	--text-font-size-small:0.75rem;
+	--text-font-size-small:0.75em;
 	--text-line-height:1.5em;
 
 
@@ -128,6 +132,7 @@ button, input, label {
 h1, h2 {
 	font-family:var(--headline-font-family);
 	line-height: var(--headline-line-height);
+	margin-top:var(--headline-line-height);
 	letter-spacing: var(--headline-letter-spacing);
 	word-break: break-word;
 }
@@ -139,7 +144,10 @@ h1 {
 
 h2 {
 	font-size:var(--headline-font-size-2);
-	margin:0;
+
+	&:first-child {
+		margin:0;
+	}
 }
 
 p {
