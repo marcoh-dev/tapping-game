@@ -31,3 +31,10 @@ export const StyledBackLink = styled(Link)`
 export const StyledTextpageSection = styled.section`
   margin: var(--spacing-normal);
 `;
+
+export const StyledTextpageButtonListWrap = styled.section`
+  margin: var(--spacing-normal);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+`;

@@ -10,6 +10,16 @@ export const StyledButtonSection = styled.section`
     $alignBottom ? "flex-end" : "flex-start"};
 `;
 
+export const StyledButtonList = styled.section`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-normal);
+
+  justify-content: ${({ $alignRight }) =>
+    $alignRight ? "flex-end" : "flex-start"};
+`;
+
 export const StyledButtons = styled.div`
   display: inline-flex;
   flex-direction: column;
@@ -19,13 +29,25 @@ export const StyledButtons = styled.div`
 
 export const StyledButton = styled.button`
   color: inherit;
-  background-color: var(--gray-200);
   border: var(--border-normal);
+  border-color: ${({ $borderless, $isActive }) => $borderless && "transparent"};
   border-radius: var(--border-radius-normal);
   padding: var(--spacing-small) var(--spacing-normal);
 
+  background-color: ${({ $borderless, $isActive }) =>
+    $isActive
+      ? $borderless
+        ? "var(--green-300)"
+        : "var(--gray-300)"
+      : "var(--gray-200)"};
+
   &:hover {
-    background-color: var(--gray-300);
+    background-color: ${({ $borderless, $isActive }) =>
+      $isActive
+        ? $borderless
+          ? "var(--green-300)"
+          : "var(--gray-300)"
+        : "var(--gray-300)"};
   }
 
   &:focus-visible {
@@ -33,23 +55,41 @@ export const StyledButton = styled.button`
     outline-offset: var(--outline-offset-normal);
   }
 
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    border: none;
+  }
+
   @media (prefers-color-scheme: dark) {
-    background-color: var(--gray-700);
+    background-color: ${({ $borderless, $isActive }) =>
+      $isActive
+        ? $borderless
+          ? "var(--green-700)"
+          : "var(--gray-600)"
+        : "var(--gray-700)"};
     &:hover {
-      background-color: var(--gray-600);
+      background-color: ${({ $borderless, $isActive }) =>
+        $isActive
+          ? $borderless
+            ? "var(--green-700)"
+            : "var(--gray-600)"
+          : "var(--gray-600)"};
     }
   }
 `;
 
 export const StyledButtonGreen = styled(StyledButton)`
-  background-color: var(--green-200);
+  background-color: ${({ $isActive }) =>
+    $isActive ? "var(--green-300)" : "var(--green-200)"};
 
   &:hover {
     background-color: var(--green-300);
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: var(--green-800);
+    background-color: ${({ $isActive }) =>
+      $isActive ? "var(--green-700)" : "var(--green-800)"};
 
     &:hover {
       background-color: var(--green-700);
@@ -58,14 +98,16 @@ export const StyledButtonGreen = styled(StyledButton)`
 `;
 
 export const StyledButtonYellow = styled(StyledButton)`
-  background-color: var(--yellow-200);
+  background-color: ${({ $isActive }) =>
+    $isActive ? "var(--yellow-300)" : "var(--yellow-200)"};
 
   &:hover {
     background-color: var(--yellow-300);
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: var(--yellow-800);
+    background-color: ${({ $isActive }) =>
+      $isActive ? "var(--yellow-700)" : "var(--yellow-800)"};
 
     &:hover {
       background-color: var(--yellow-700);
@@ -74,14 +116,16 @@ export const StyledButtonYellow = styled(StyledButton)`
 `;
 
 export const StyledButtonRed = styled(StyledButton)`
-  background-color: var(--red-200);
+  background-color: ${({ $isActive }) =>
+    $isActive ? "var(--red-300)" : "var(--red-200)"};
 
   &:hover {
     background-color: var(--red-300);
   }
 
   @media (prefers-color-scheme: dark) {
-    background-color: var(--red-800);
+    background-color: ${({ $isActive }) =>
+      $isActive ? "var(--red-700)" : "var(--red-800)"};
 
     &:hover {
       background-color: var(--red-700);

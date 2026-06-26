@@ -15,29 +15,48 @@ import GameMenu from "../GameMenu";
 import MenuOpenIcon from "@/icons/menu-open.svg";
 import MenuCloseIcon from "@/icons/menu-close.svg";
 
-export default function Game() {
+export default function Game({ mode, isSignedIn }) {
   const [isCountdown, setIsCountdown] = useState(true);
   const [resetCountdown, setResetCountdown] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGameMenuOpen, setIsGameMenuOpen] = useState(false);
-  const [scoreHistory, setScoreHistory] = useLocalStorageState("scoreHistory", {
-    defaultValue: [],
-  });
+  const [databaseHighscore, setDatabaseHighscore] = useState(0);
+  const [localScoreHistory, setLocalScoreHistory] = useLocalStorageState(
+    "localScoreHistory",
+    {
+      defaultValue: [],
+    }
+  );
   const [score, setScore] = useState(0);
-  const highscore = Math.max(
+  const localHighscore = Math.max(
     0,
-    ...scoreHistory
-      .filter((historyEntry) => historyEntry.isHighscore)
+    ...localScoreHistory
+      .filter(
+        (historyEntry) =>
+          historyEntry.isHighscore && historyEntry.mode === mode.id
+      )
       .map((historyEntry) => historyEntry.score)
   );
 
-  const [displayedHighscore, setDisplayedHighscore] = useState(null);
+  const highscore = isSignedIn ? databaseHighscore : localHighscore;
+
+  async function getHighscore() {
+    try {
+      const response = await fetch(`/api/scores/best?mode=${mode.id}`);
+      const data = await response.json();
+      setDatabaseHighscore(data?.score ?? 0);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
-    if (displayedHighscore === null) {
-      setDisplayedHighscore(highscore);
-    }
-  }, [highscore, displayedHighscore]);
+    if (!isSignedIn) return;
+
+    getHighscore();
+  }, [isSignedIn, databaseHighscore, highscore]);
+
+  const [displayedHighscore, setDisplayedHighscore] = useState(0);
 
   function handleTargetClick(increment) {
     setScore((prev) => prev + increment);
@@ -47,18 +66,31 @@ export default function Game() {
     setIsCountdown(false);
   }
 
-  function handleGameOver() {
+  async function handleGameOver() {
     setIsGameMenuOpen(false);
     if (score > 0) {
       const isHighscoreBeaten = score > highscore;
-      setScoreHistory((prev) => [
-        ...prev,
-        {
+      if (isHighscoreBeaten) {
+        setDatabaseHighscore();
+      }
+
+      if (isSignedIn) {
+        const result = await handleScoreCreate({
           score,
-          timestamp: Date.now(),
+          mode: mode.id,
           isHighscore: isHighscoreBeaten,
-        },
-      ]);
+        });
+      } else {
+        setLocalScoreHistory((prev) => [
+          ...prev,
+          {
+            score,
+            mode: mode.id,
+            timestamp: Date.now(),
+            isHighscore: isHighscoreBeaten,
+          },
+        ]);
+      }
     }
   }
 
@@ -77,6 +109,32 @@ export default function Game() {
     setScore(0);
   }
 
+  async function handleScoreCreate({ score, mode, isHighscore }) {
+    try {
+      const response = await fetch("/api/scores", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          score,
+          mode,
+          isHighscore,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save score");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("saveScore error:", error);
+      return null;
+    }
+  }
+
   return (
     <StyledGameWrap>
       <StyledGameHeader $isGameOver={isGameOver}>
@@ -86,9 +144,9 @@ export default function Game() {
           </>
         ) : (
           <>
-            <GameScore score={score} />
+            <GameScore mode={mode} score={score} />
             <GameTimer
-              duration={30}
+              mode={mode}
               isCountdown={isCountdown}
               isGameOver={isGameOver}
               onTimerComplete={setIsGameOver}
