@@ -11,11 +11,12 @@ import {
 } from "./GameMenu.styled";
 import Link from "next/link";
 
-export default function GameMenu({ onGameRestart }) {
+export default function GameMenu({ mode, onGameRestart }) {
   return (
     <StyledGameMenuWrap>
       <StyledGameMenuSection>
-        <StyledGameMenuHeadline>Menu</StyledGameMenuHeadline>
+        <p>Game Mode</p>
+        <StyledGameMenuHeadline>{mode.name}</StyledGameMenuHeadline>
       </StyledGameMenuSection>
 
       <StyledButtonSection>
