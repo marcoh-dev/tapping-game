@@ -231,7 +231,7 @@ export default function GameLeaderboards() {
                 $borderless
                 onClick={() => setIsObsoleteVisible(!isObsoleteVisible)}
               >
-                show obsolete
+                {isObsoleteVisible ? <>hide obsolete</> : <>show obsolete</>}
               </StyledButton>
             </StyledButtonList>
           </StyledTextpageButtonListWrap>
