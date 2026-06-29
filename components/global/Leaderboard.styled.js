@@ -85,6 +85,19 @@ export const StyledLeaderboardCell = styled.div`
   opacity: ${({ $isObsolete }) => ($isObsolete ? "0.6" : "1")};
 `;
 
+export const StyledLeaderboardCellTextWrap = styled.span`
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+
+  a {
+    svg {
+      height: 1rem;
+      width: auto;
+    }
+  }
+`;
+
 export const StyledLeaderboardProfileImage = styled(Image)`
   height: 1.75rem;
   width: auto;

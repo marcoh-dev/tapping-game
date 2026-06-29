@@ -11,6 +11,8 @@ import Link from "next/link";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from "react";
 import { GAME_MODES } from "@/lib/gameModes";
+import ProfileIcon from "@/icons/profile.svg";
+import { StyledProfileLink } from "@/components/global/Profile.styled";
 
 export default function HomePage() {
   const { data: session } = useSession();
@@ -23,6 +25,11 @@ export default function HomePage() {
       </Head>
       <Header />
       <main>
+        {session && (
+          <StyledProfileLink href={`/users/${session?.user?.id}?back=home`}>
+            <ProfileIcon />
+          </StyledProfileLink>
+        )}
         <StyledWrap>
           <StyledButtonSection>
             <StyledButtons>
