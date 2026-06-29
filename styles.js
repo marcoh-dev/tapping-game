@@ -110,6 +110,7 @@ body {
 	color:var(--gray-900);
 	background-color: var(--gray-100);
     min-height: 100vh;
+	align-items: center;
 
 	@media (prefers-color-scheme: dark) {
 		color:var(--gray-100);
@@ -122,6 +123,8 @@ body {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;
+	max-width:768px;
+	width: 100%;
 }
 
 h1, h2, h3, h4,
