@@ -21,10 +21,13 @@ import {
   StyledLeaderboardBody,
   StyledLeaderboardBodyRow,
   StyledLeaderboardCell,
+  StyledLeaderboardCellTextWrap,
   StyledLeaderboardProfileImage,
 } from "@/components/global/Leaderboard.styled";
 import useLocalStorageState from "use-local-storage-state";
 import { useState } from "react";
+
+import ProfileIcon from "@/icons/profile.svg";
 
 export default function GameLeaderboards() {
   const [localScoreHistory, setLocalScoreHistory] = useLocalStorageState(
@@ -209,7 +212,12 @@ export default function GameLeaderboards() {
                           alt=""
                         />
                       )}
-                      {entry.user.name}
+                      <StyledLeaderboardCellTextWrap>
+                        {entry.user.name}
+                        <Link href={`/users/${entry.user._id}`}>
+                          <ProfileIcon />
+                        </Link>
+                      </StyledLeaderboardCellTextWrap>
                     </StyledLeaderboardCell>
                     <StyledLeaderboardCell $isObsolete={entry.isObsolete}>
                       {entry.score}
