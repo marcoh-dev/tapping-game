@@ -58,6 +58,7 @@ export default createGlobalStyle`
 	--headline-font-family: ${inter.style.fontFamily};
 	--headline-font-size-1:1.75rem;
 	--headline-font-size-2:1.25rem;
+	--headline-font-size-3:1.1rem;
 	--headline-line-height:1.3em;
 	--headline-letter-spacing:0.02em;
 
@@ -125,6 +126,7 @@ body {
 	flex-grow: 1;
 	max-width:768px;
 	width: 100%;
+	position: relative;
 }
 
 h1, h2, h3, h4,
@@ -132,7 +134,7 @@ button, input, label {
   line-height: inherit;
 }
 
-h1, h2 {
+h1, h2, h3 {
 	font-family:var(--headline-font-family);
 	line-height: var(--headline-line-height);
 	margin-top:var(--headline-line-height);
@@ -147,6 +149,14 @@ h1 {
 
 h2 {
 	font-size:var(--headline-font-size-2);
+
+	&:first-child {
+		margin:0;
+	}
+}
+
+h3 {
+	font-size:var(--headline-font-size-3);
 
 	&:first-child {
 		margin:0;
