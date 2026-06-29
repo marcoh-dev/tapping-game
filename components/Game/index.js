@@ -175,7 +175,9 @@ export default function Game({ mode, isSignedIn }) {
             isGameMenuOpen={isGameMenuOpen}
           />
         )}
-        {isGameMenuOpen && <GameMenu onGameRestart={handleGameRestart} />}
+        {isGameMenuOpen && (
+          <GameMenu mode={mode} onGameRestart={handleGameRestart} />
+        )}
         {isGameOver && (
           <GameOver
             score={score}
