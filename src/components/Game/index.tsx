@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 
 import { saveScore } from "@/app/actions";
@@ -86,11 +86,10 @@ export default function Game({ mode, isSignedIn, initialHighscore }: GameProps) 
 		}
 	}
 
-	useEffect(() => {
-		if (isGameOver) {
-			handleGameOver();
-		}
-	}, [isGameOver]);
+	function handleTimerComplete() {
+		setIsGameOver(true);
+		void handleGameOver();
+	}
 
 	function handleGameRestart() {
 		setResetCountdown((prev) => prev + 1);
@@ -112,10 +111,11 @@ export default function Game({ mode, isSignedIn, initialHighscore }: GameProps) 
 					<>
 						<GameScore mode={mode} score={score} />
 						<GameTimer
+							key={resetCountdown}
 							mode={mode}
 							isCountdown={isCountdown}
 							isGameOver={isGameOver}
-							onTimerComplete={setIsGameOver}
+							onTimerComplete={handleTimerComplete}
 						/>
 						<StyledGameMenuButton
 							onClick={() => setIsGameMenuOpen(!isGameMenuOpen)}
@@ -129,8 +129,8 @@ export default function Game({ mode, isSignedIn, initialHighscore }: GameProps) 
 			<StyledGameBody>
 				{isCountdown && (
 					<GameCountdown
+						key={resetCountdown}
 						startFrom={3}
-						resetCountdown={resetCountdown}
 						onCountdownComplete={handleCountdownComplete}
 					/>
 				)}

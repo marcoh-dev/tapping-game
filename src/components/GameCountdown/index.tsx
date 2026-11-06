@@ -1,19 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 import { StyledGameCountdown, StyledGameCountdownWrap } from "./GameCountdown.styled";
 
 type GameCountdownProps = {
 	startFrom?: number;
-	resetCountdown: number;
 	onCountdownComplete: () => void;
 };
 
-export default function GameCountdown({
-	startFrom = 3,
-	resetCountdown,
-	onCountdownComplete,
-}: GameCountdownProps) {
+export default function GameCountdown({ startFrom = 3, onCountdownComplete }: GameCountdownProps) {
 	const [countdown, setCountdown] = useState(startFrom);
+	const completeCountdown = useEffectEvent(onCountdownComplete);
+
 	useEffect(() => {
 		if (countdown > 0) {
 			const countdownTimer = setTimeout(() => {
@@ -21,13 +18,9 @@ export default function GameCountdown({
 			}, 1000);
 			return () => clearTimeout(countdownTimer);
 		} else {
-			onCountdownComplete();
+			completeCountdown();
 		}
-	}, [countdown, onCountdownComplete]);
-
-	useEffect(() => {
-		setCountdown(startFrom);
-	}, [startFrom, resetCountdown]);
+	}, [countdown]);
 
 	return (
 		<StyledGameCountdownWrap>
