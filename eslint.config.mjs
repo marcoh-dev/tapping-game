@@ -29,8 +29,6 @@ export default defineConfig([
 				{ patterns: [{ regex: "(^|/)\\.\\./", message: 'Use "@/…" instead of "../".' }] },
 			],
 			"react/jsx-uses-react": "off",
-			"react-hooks/set-state-in-effect": "warn",
-			"react-hooks/immutability": "warn",
 			"@typescript-eslint/no-explicit-any": "error",
 			"@typescript-eslint/no-unused-vars": [
 				"error",
