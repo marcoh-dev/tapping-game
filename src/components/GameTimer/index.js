@@ -1,63 +1,56 @@
 import { useEffect, useState } from "react";
-import {
-  StyledGameTimerSection,
-  StyledGameTimerSecond,
-} from "./GameTimer.styled";
 
-export default function GameTimer({
-  mode,
-  isCountdown,
-  isGameover,
-  onTimerComplete,
-}) {
-  const isInfinite = mode.type === "points";
-  const duration = mode.time;
+import { StyledGameTimerSecond, StyledGameTimerSection } from "./GameTimer.styled";
 
-  const [time, setTime] = useState(isInfinite ? 0 : duration * 1000);
+export default function GameTimer({ mode, isCountdown, isGameover, onTimerComplete }) {
+	const isInfinite = mode.type === "points";
+	const duration = mode.time;
 
-  useEffect(() => {
-    setTime(isInfinite ? 0 : duration * 1000);
-  }, [isInfinite, duration]);
+	const [time, setTime] = useState(isInfinite ? 0 : duration * 1000);
 
-  useEffect(() => {
-    if (isCountdown || isGameover) return;
+	useEffect(() => {
+		setTime(isInfinite ? 0 : duration * 1000);
+	}, [isInfinite, duration]);
 
-    const startTime = Date.now();
-    const endTime = startTime + duration * 1000;
+	useEffect(() => {
+		if (isCountdown || isGameover) return;
 
-    const interval = setInterval(() => {
-      if (isInfinite) {
-        setTime(Date.now() - startTime);
-      } else {
-        const remainingTime = Math.max(0, endTime - Date.now());
+		const startTime = Date.now();
+		const endTime = startTime + duration * 1000;
 
-        setTime(remainingTime);
+		const interval = setInterval(() => {
+			if (isInfinite) {
+				setTime(Date.now() - startTime);
+			} else {
+				const remainingTime = Math.max(0, endTime - Date.now());
 
-        if (remainingTime === 0) {
-          clearInterval(interval);
-          onTimerComplete(true);
-        }
-      }
-    }, 32);
+				setTime(remainingTime);
 
-    return () => clearInterval(interval);
-  }, [duration, isInfinite, isCountdown, isGameover, onTimerComplete]);
+				if (remainingTime === 0) {
+					clearInterval(interval);
+					onTimerComplete(true);
+				}
+			}
+		}, 32);
 
-  const seconds = Math.floor(time / 1000);
-  const milliseconds = time % 1000;
+		return () => clearInterval(interval);
+	}, [duration, isInfinite, isCountdown, isGameover, onTimerComplete]);
 
-  return (
-    <StyledGameTimerSection $isLastFiveSeconds={!isInfinite && time <= 5000}>
-      {isCountdown ? (
-        <span>
-          <StyledGameTimerSecond>{duration}</StyledGameTimerSecond>
-        </span>
-      ) : (
-        <span>
-          <StyledGameTimerSecond>{seconds}</StyledGameTimerSecond>,
-          {milliseconds.toString().padStart(3, "0")}
-        </span>
-      )}
-    </StyledGameTimerSection>
-  );
+	const seconds = Math.floor(time / 1000);
+	const milliseconds = time % 1000;
+
+	return (
+		<StyledGameTimerSection $isLastFiveSeconds={!isInfinite && time <= 5000}>
+			{isCountdown ? (
+				<span>
+					<StyledGameTimerSecond>{duration}</StyledGameTimerSecond>
+				</span>
+			) : (
+				<span>
+					<StyledGameTimerSecond>{seconds}</StyledGameTimerSecond>,
+					{milliseconds.toString().padStart(3, "0")}
+				</span>
+			)}
+		</StyledGameTimerSection>
+	);
 }

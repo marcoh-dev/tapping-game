@@ -3,31 +3,31 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const scoreSchema = new Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    score: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    isHighscore: {
-      type: Boolean,
-      required: true,
-    },
-    mode: {
-      type: String,
-      required: true,
-      default: "30s",
-    },
-  },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
+	{
+		userId: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+		},
+		score: {
+			type: Number,
+			required: true,
+			min: 0,
+		},
+		isHighscore: {
+			type: Boolean,
+			required: true,
+		},
+		mode: {
+			type: String,
+			required: true,
+			default: "30s",
+		},
+	},
+	{
+		timestamps: true,
+		versionKey: false,
+	},
 );
 
 scoreSchema.index({ userId: 1 });
