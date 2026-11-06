@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useState } from "react";
 
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/components/global/Buttons.styled";
 import { StyledWrap } from "@/components/global/Global.styled";
 import { StyledProfileLink } from "@/components/global/Profile.styled";
+import SignOutButton from "@/components/SignOutButton";
 import ProfileIcon from "@/icons/profile.svg";
 import { ACTIVE_GAME_MODES } from "@/lib/gameModes";
 
@@ -60,7 +61,7 @@ export default function HomeMenu({ userId }: HomeMenuProps) {
 									How to play
 								</StyledButton>
 								{userId ? (
-									<StyledButton onClick={() => signOut()}>Sign out</StyledButton>
+									<SignOutButton />
 								) : (
 									<StyledButton onClick={() => signIn()}>Sign in</StyledButton>
 								)}
