@@ -11,7 +11,6 @@ import { StyledHeader, StyledHeaderGameArea, StyledHeadline } from "./Header.sty
 export default function Header() {
 	const gameAreaRef = useRef<HTMLElement>(null);
 	const [targets, setTargets] = useState<Target[]>([]);
-	const [allTargetsClicked, setAllTargetsClicked] = useState(false);
 
 	useEffect(() => {
 		const gameArea = gameAreaRef.current;
@@ -50,13 +49,7 @@ export default function Header() {
 		});
 	}, []);
 
-	useEffect(() => {
-		if (targets.length > 0 && targets.every((target) => target.removing)) {
-			setAllTargetsClicked(true);
-		} else {
-			setAllTargetsClicked(false);
-		}
-	}, [targets]);
+	const allTargetsClicked = targets.length > 0 && targets.every((target) => target.removing);
 
 	function handleClick(id: string) {
 		setTargets((prev) =>
