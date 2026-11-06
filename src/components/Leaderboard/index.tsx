@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 
+import FormattedDate from "@/components/FormattedDate";
 import { StyledButton, StyledButtonList } from "@/components/global/Buttons.styled";
 import {
 	StyledBackLink,
@@ -129,7 +130,7 @@ export default function Leaderboard({ scope, currentMode, onlineScores }: Leader
 									<StyledLeaderboardCell>{index + 1}.</StyledLeaderboardCell>
 									<StyledLeaderboardCell>{entry.score}</StyledLeaderboardCell>
 									<StyledLeaderboardCell>
-										{new Date(entry.timestamp).toLocaleString()}
+										<FormattedDate date={entry.timestamp} />
 									</StyledLeaderboardCell>
 								</StyledLeaderboardBodyRow>
 							))}
@@ -171,7 +172,7 @@ export default function Leaderboard({ scope, currentMode, onlineScores }: Leader
 											{entry.score}
 										</StyledLeaderboardCell>
 										<StyledLeaderboardCell $isObsolete={entry.isObsolete}>
-											{new Date(entry.createdAt).toLocaleString()}
+											<FormattedDate date={entry.createdAt} />
 										</StyledLeaderboardCell>
 									</StyledLeaderboardBodyRow>
 								))}

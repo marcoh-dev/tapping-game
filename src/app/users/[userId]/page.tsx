@@ -53,6 +53,7 @@ export default async function ProfilePage({ params, searchParams }: PageProps<"/
 							<StyledProfileDataWrap>
 								{profile.user.image && (
 									<StyledProfileDataImage
+										loading="eager"
 										width={100}
 										height={100}
 										src={profile.user.image}
