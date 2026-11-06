@@ -13,7 +13,9 @@
 		"typecheck": "next typegen && tsc --noEmit",
 		"check": "npm run lint && npm run format:check && npm run typecheck",
 		"test": "vitest run",
-		"test:watch": "vitest"
+		"test:watch": "vitest",
+		"sync": "git switch main && git pull && node scripts/install-if-changed.mjs && docker compose up -d --wait",
+		"sync:branch": "git fetch origin && git merge --no-commit origin/main && node scripts/install-if-changed.mjs && docker compose up -d --wait"
 	},
 	"engines": {
 		"node": "24.x"
