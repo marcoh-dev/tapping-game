@@ -2,15 +2,16 @@ import { MongoClient } from "mongodb";
 
 import { requireEnv } from "@/lib/env";
 
-const uri = requireEnv("MONGODB_URI");
+let clientPromise: Promise<MongoClient> | undefined;
 
 function connect(): Promise<MongoClient> {
-	return new MongoClient(uri).connect();
+	return new MongoClient(requireEnv("MONGODB_URI")).connect();
 }
 
-const clientPromise =
-	process.env.NODE_ENV === "development"
-		? (globalThis.mongoClientPromise ??= connect())
-		: connect();
+export function getMongoClient(): Promise<MongoClient> {
+	if (process.env.NODE_ENV === "development") {
+		return (globalThis.mongoClientPromise ??= connect());
+	}
 
-export default clientPromise;
+	return (clientPromise ??= connect());
+}

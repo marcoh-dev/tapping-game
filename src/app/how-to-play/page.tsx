@@ -1,4 +1,4 @@
-import Head from "next/head";
+import type { Metadata } from "next";
 import { Fragment } from "react";
 
 import {
@@ -8,12 +8,13 @@ import {
 } from "@/components/global/Global.styled";
 import { ACTIVE_GAME_MODES } from "@/lib/gameModes";
 
+export const metadata: Metadata = {
+	title: "How to play",
+};
+
 export default function HowToPlayPage() {
 	return (
 		<>
-			<Head>
-				<title>How to play</title>
-			</Head>
 			<StyledTextpageHeader>
 				<StyledBackLink href="/">&lt;</StyledBackLink>
 				<h1>How to play</h1>

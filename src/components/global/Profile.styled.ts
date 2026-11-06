@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -32,4 +34,8 @@ export const StyledProfileDataImage = styled(Image)`
 	width: auto;
 	border-radius: 50%;
 	border: var(--border-small-lighter);
+`;
+
+export const StyledProfileActions = styled.div`
+	margin-left: auto;
 `;
