@@ -19,3 +19,7 @@ Requirements: Node 24 (`nvm use`) and Docker.
 - `npm run format` / `npm run format:check` to run Prettier
 - `npm run typecheck` to check the types
 - `npm run check` to run lint, format check and typecheck
+- `npm run sync` to switch to `main`, pull, install dependencies if `package-lock.json` changed and start the database
+- `npm run sync:branch` to merge `main` into the current branch (without committing), install if needed and start the database
+
+`sync:branch` prepares the merge but doesn't commit it, so you can check it first (`git merge --abort` undoes it). After a reinstall in VS Code, run **Developer: Reload Window** so the TypeScript and ESLint servers pick up the new `node_modules`.
