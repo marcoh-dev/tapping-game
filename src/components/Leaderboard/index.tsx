@@ -28,6 +28,8 @@ import type { LeaderboardScore } from "@/types/api";
 import type { LocalScoreEntry } from "@/types/game";
 import { rankScores } from "@/utils/leaderboard";
 
+const EAGER_IMAGE_ROWS = 5;
+
 export type LeaderboardScope = "global" | "local";
 
 type LeaderboardProps = {
@@ -147,7 +149,7 @@ export default function Leaderboard({ scope, currentMode, onlineScores }: Leader
 						<StyledLeaderboardBody>
 							{leaderboard
 								.filter((entry) => isObsoleteVisible || !entry.isObsolete)
-								.map((entry) => (
+								.map((entry, index) => (
 									<StyledLeaderboardBodyRow key={entry._id}>
 										<StyledLeaderboardCell>
 											{entry.rank && `${entry.rank}.`}
@@ -155,6 +157,9 @@ export default function Leaderboard({ scope, currentMode, onlineScores }: Leader
 										<StyledLeaderboardCell $isObsolete={entry.isObsolete}>
 											{entry.user.image && (
 												<StyledLeaderboardProfileImage
+													loading={
+														index < EAGER_IMAGE_ROWS ? "eager" : "lazy"
+													}
 													width={100}
 													height={100}
 													src={entry.user.image}
