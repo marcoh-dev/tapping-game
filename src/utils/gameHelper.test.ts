@@ -43,12 +43,12 @@ describe("createTarget", () => {
 	});
 
 	it("does not overlap existing targets when there is room", () => {
-		const existing = [createTarget([], 500, 500, scale)];
+		const existingTarget = createTarget([], 500, 500, scale);
 
 		for (let i = 0; i < 50; i++) {
-			const target = createTarget(existing, 500, 500, scale);
+			const target = createTarget([existingTarget], 500, 500, scale);
 
-			expect(isOverlapping(target, existing[0], scale.gap)).toBe(false);
+			expect(isOverlapping(target, existingTarget, scale.gap)).toBe(false);
 		}
 	});
 });
