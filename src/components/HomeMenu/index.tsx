@@ -12,8 +12,8 @@ import {
 } from "@/components/global/Buttons.styled";
 import { StyledWrap } from "@/components/global/Global.styled";
 import { StyledProfileLink } from "@/components/global/Profile.styled";
+import ProfileIcon from "@/components/icons/ProfileIcon";
 import SignOutButton from "@/components/SignOutButton";
-import ProfileIcon from "@/icons/profile.svg";
 import { ACTIVE_GAME_MODES } from "@/lib/gameModes";
 
 type HomeMenuProps = {

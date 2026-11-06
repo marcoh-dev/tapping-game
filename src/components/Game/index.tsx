@@ -11,8 +11,8 @@ import { StyledGameMenuButton } from "@/components/GameMenu/GameMenu.styled";
 import GameOver from "@/components/GameOver";
 import GameScore from "@/components/GameScore";
 import GameTimer from "@/components/GameTimer";
-import MenuCloseIcon from "@/icons/menu-close.svg";
-import MenuOpenIcon from "@/icons/menu-open.svg";
+import MenuCloseIcon from "@/components/icons/MenuCloseIcon";
+import MenuOpenIcon from "@/components/icons/MenuOpenIcon";
 import type { GameMode, LocalScoreEntry } from "@/types/game";
 
 import { StyledGameBody, StyledGameHeader, StyledGameWrap } from "./Game.styled";
