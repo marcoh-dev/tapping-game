@@ -2,6 +2,7 @@
 
 import { Fragment, useState } from "react";
 
+import FormattedDate from "@/components/FormattedDate";
 import { StyledButton, StyledButtonList } from "@/components/global/Buttons.styled";
 import {
 	StyledTextpageButtonListWrap,
@@ -85,7 +86,7 @@ export default function ProfileRecords({ userId, scores }: ProfileRecordsProps) 
 												{entry.score}
 											</StyledLeaderboardCell>
 											<StyledLeaderboardCell $isObsolete={entry.isObsolete}>
-												{new Date(entry.createdAt).toLocaleString()}
+												<FormattedDate date={entry.createdAt} />
 											</StyledLeaderboardCell>
 										</StyledLeaderboardBodyRow>
 									))}
