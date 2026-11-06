@@ -1,103 +1,90 @@
-import { useRef, useEffect, useState } from "react";
-import { StyledGameArea, StyledGameTarget } from "./GameLogic.styled";
+import { useEffect, useRef, useState } from "react";
+
 import { createTarget, getScale } from "@/utils/gameHelper";
 
-export default function GameLogic({
-  onTargetClick,
-  isGameMenuOpen,
-  isGameOver,
-}) {
-  const gameAreaRef = useRef(null);
-  const targetCount = 3;
-  const [targets, setTargets] = useState([]);
+import { StyledGameArea, StyledGameTarget } from "./GameLogic.styled";
 
-  useEffect(() => {
-    const gameArea = gameAreaRef.current;
-    if (!gameArea) {
-      return;
-    }
+export default function GameLogic({ onTargetClick, isGameMenuOpen, isGameOver }) {
+	const gameAreaRef = useRef(null);
+	const targetCount = 3;
+	const [targets, setTargets] = useState([]);
 
-    const { width: gameAreaWidth, height: gameAreaHeight } =
-      gameArea.getBoundingClientRect();
-    const gameAreaScale = getScale(gameAreaWidth, gameAreaHeight);
+	useEffect(() => {
+		const gameArea = gameAreaRef.current;
+		if (!gameArea) {
+			return;
+		}
 
-    const initialTargets = [];
+		const { width: gameAreaWidth, height: gameAreaHeight } = gameArea.getBoundingClientRect();
+		const gameAreaScale = getScale(gameAreaWidth, gameAreaHeight);
 
-    for (let i = 0; i < targetCount; i++) {
-      initialTargets.push(
-        createTarget(
-          initialTargets,
-          gameAreaWidth,
-          gameAreaHeight,
-          gameAreaScale
-        )
-      );
-    }
+		const initialTargets = [];
 
-    setTargets(initialTargets);
+		for (let i = 0; i < targetCount; i++) {
+			initialTargets.push(
+				createTarget(initialTargets, gameAreaWidth, gameAreaHeight, gameAreaScale),
+			);
+		}
 
-    requestAnimationFrame(() => {
-      setTargets((prev) =>
-        prev.map((target) => ({ ...target, removing: false }))
-      );
-    });
-  }, []);
+		setTargets(initialTargets);
 
-  function handleClick(id) {
-    if (isGameOver || isGameMenuOpen) return;
+		requestAnimationFrame(() => {
+			setTargets((prev) => prev.map((target) => ({ ...target, removing: false })));
+		});
+	}, []);
 
-    const gameArea = gameAreaRef.current;
-    if (!gameArea) {
-      return;
-    }
+	function handleClick(id) {
+		if (isGameOver || isGameMenuOpen) return;
 
-    const { width: gameAreaWidth, height: gameAreaHeight } =
-      gameArea.getBoundingClientRect();
-    const gameAreaScale = getScale(gameAreaWidth, gameAreaHeight);
+		const gameArea = gameAreaRef.current;
+		if (!gameArea) {
+			return;
+		}
 
-    setTargets((prev) => {
-      const filteredTargets = prev.filter((target) => target.id !== id);
+		const { width: gameAreaWidth, height: gameAreaHeight } = gameArea.getBoundingClientRect();
+		const gameAreaScale = getScale(gameAreaWidth, gameAreaHeight);
 
-      const newTarget = createTarget(
-        filteredTargets,
-        gameAreaWidth,
-        gameAreaHeight,
-        gameAreaScale
-      );
+		setTargets((prev) => {
+			const filteredTargets = prev.filter((target) => target.id !== id);
 
-      const next = [...filteredTargets, newTarget];
+			const newTarget = createTarget(
+				filteredTargets,
+				gameAreaWidth,
+				gameAreaHeight,
+				gameAreaScale,
+			);
 
-      return next.map((target) =>
-        target.id === newTarget.id ? { ...target, removing: true } : target
-      );
-    });
+			const next = [...filteredTargets, newTarget];
 
-    onTargetClick(1);
+			return next.map((target) =>
+				target.id === newTarget.id ? { ...target, removing: true } : target,
+			);
+		});
 
-    requestAnimationFrame(() => {
-      setTargets((prev) =>
-        prev.map((target) => ({ ...target, removing: false }))
-      );
-    });
-  }
+		onTargetClick(1);
 
-  return (
-    <StyledGameArea ref={gameAreaRef}>
-      {targets.map((target) => (
-        <StyledGameTarget
-          key={target.id}
-          $isHidden={target.removing}
-          onClick={() => handleClick(target.id)}
-          aria-label="target"
-          disabled={isGameOver || isGameMenuOpen}
-          style={{
-            left: target.left,
-            top: target.top,
-            width: target.size,
-            height: target.size,
-          }}
-        />
-      ))}
-    </StyledGameArea>
-  );
+		requestAnimationFrame(() => {
+			setTargets((prev) => prev.map((target) => ({ ...target, removing: false })));
+		});
+	}
+
+	return (
+		<StyledGameArea ref={gameAreaRef}>
+			{targets.map((target) => (
+				<StyledGameTarget
+					key={target.id}
+					$isHidden={target.removing}
+					onClick={() => handleClick(target.id)}
+					aria-label="target"
+					disabled={isGameOver || isGameMenuOpen}
+					style={{
+						left: target.left,
+						top: target.top,
+						width: target.size,
+						height: target.size,
+					}}
+				/>
+			))}
+		</StyledGameArea>
+	);
 }

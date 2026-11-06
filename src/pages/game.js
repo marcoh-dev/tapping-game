@@ -1,24 +1,25 @@
-import Game from "@/components/Game";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
-import { getGameMode } from "@/lib/gameModes";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
+import Game from "@/components/Game";
+import { getGameMode } from "@/lib/gameModes";
 
 export default function GamePage() {
-  const router = useRouter();
-  const mode = getGameMode(router?.query?.mode);
+	const router = useRouter();
+	const mode = getGameMode(router?.query?.mode);
 
-  const { data: session, status } = useSession();
+	const { data: session, status } = useSession();
 
-  const isSignedIn = status === "authenticated";
-  return (
-    <>
-      <Head>
-        <title>tapping game</title>
-      </Head>
-      <main>
-        <Game mode={mode} isSignedIn={isSignedIn} />
-      </main>
-    </>
-  );
+	const isSignedIn = status === "authenticated";
+	return (
+		<>
+			<Head>
+				<title>tapping game</title>
+			</Head>
+			<main>
+				<Game mode={mode} isSignedIn={isSignedIn} />
+			</main>
+		</>
+	);
 }
