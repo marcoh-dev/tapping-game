@@ -17,7 +17,3 @@ export type Score = {
 export type LeaderboardScore = Score & {
 	user: User;
 };
-
-export type BestScore = {
-	score: number;
-};

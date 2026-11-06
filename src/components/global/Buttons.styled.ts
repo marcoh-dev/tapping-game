@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 
 export const StyledButtonSection = styled.section<{ $alignBottom?: boolean }>`

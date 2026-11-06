@@ -1,6 +1,9 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
 
+import { saveScore } from "@/app/actions";
 import GameCountdown from "@/components/GameCountdown";
 import GameLogic from "@/components/GameLogic";
 import GameMenu from "@/components/GameMenu";
@@ -10,7 +13,6 @@ import GameScore from "@/components/GameScore";
 import GameTimer from "@/components/GameTimer";
 import MenuCloseIcon from "@/icons/menu-close.svg";
 import MenuOpenIcon from "@/icons/menu-open.svg";
-import type { BestScore } from "@/types/api";
 import type { GameMode, LocalScoreEntry } from "@/types/game";
 
 import { StyledGameBody, StyledGameHeader, StyledGameWrap } from "./Game.styled";
@@ -18,14 +20,15 @@ import { StyledGameBody, StyledGameHeader, StyledGameWrap } from "./Game.styled"
 type GameProps = {
 	mode: GameMode;
 	isSignedIn: boolean;
+	initialHighscore: number;
 };
 
-export default function Game({ mode, isSignedIn }: GameProps) {
+export default function Game({ mode, isSignedIn, initialHighscore }: GameProps) {
 	const [isCountdown, setIsCountdown] = useState(true);
 	const [resetCountdown, setResetCountdown] = useState(0);
 	const [isGameOver, setIsGameOver] = useState(false);
 	const [isGameMenuOpen, setIsGameMenuOpen] = useState(false);
-	const [databaseHighscore, setDatabaseHighscore] = useState(0);
+	const [databaseHighscore, setDatabaseHighscore] = useState(initialHighscore);
 	const [isHighscoreBeaten, setIsHighscoreBeaten] = useState(false);
 	const [localScoreHistory, setLocalScoreHistory] = useLocalStorageState<LocalScoreEntry[]>(
 		"localScoreHistory",
@@ -43,22 +46,6 @@ export default function Game({ mode, isSignedIn }: GameProps) {
 
 	const highscore = isSignedIn ? databaseHighscore : localHighscore;
 
-	useEffect(() => {
-		if (!isSignedIn) return;
-
-		async function getHighscore() {
-			try {
-				const response = await fetch(`/api/scores/best?mode=${mode.id}`);
-				const data = (await response.json()) as BestScore;
-				setDatabaseHighscore(data?.score ?? 0);
-			} catch (error) {
-				console.error(error);
-			}
-		}
-
-		getHighscore();
-	}, [isSignedIn, mode.id]);
-
 	function handleTargetClick(increment: number) {
 		setScore((prev) => prev + increment);
 	}
@@ -74,13 +61,16 @@ export default function Game({ mode, isSignedIn }: GameProps) {
 			setIsHighscoreBeaten(isHighscoreBeaten);
 
 			if (isSignedIn) {
-				const result = await handleScoreCreate({
-					score,
-					mode: mode.id,
-					isHighscore: isHighscoreBeaten,
-				});
-				if (result && isHighscoreBeaten) {
-					setDatabaseHighscore(score);
+				try {
+					const result = await saveScore(score, mode.id);
+
+					if (!result.ok) {
+						console.error("saveScore error:", result.status);
+					} else if (result.isHighscore) {
+						setDatabaseHighscore(score);
+					}
+				} catch (error) {
+					console.error("saveScore error:", error);
 				}
 			} else {
 				setLocalScoreHistory((prev) => [
@@ -109,39 +99,6 @@ export default function Game({ mode, isSignedIn }: GameProps) {
 		setIsGameOver(false);
 		setIsHighscoreBeaten(false);
 		setScore(0);
-	}
-
-	async function handleScoreCreate({
-		score,
-		mode,
-		isHighscore,
-	}: {
-		score: number;
-		mode: string;
-		isHighscore: boolean;
-	}) {
-		try {
-			const response = await fetch("/api/scores", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					score,
-					mode,
-					isHighscore,
-				}),
-			});
-
-			if (!response.ok) {
-				throw new Error("Failed to save score");
-			}
-
-			return (await response.json()) as { _id: string };
-		} catch (error) {
-			console.error("saveScore error:", error);
-			return null;
-		}
 	}
 
 	return (

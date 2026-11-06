@@ -1,8 +1,7 @@
-import Head from "next/head";
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
 import { StyledButton, StyledButtonList } from "@/components/global/Buttons.styled";
@@ -28,36 +27,28 @@ import type { LeaderboardScore } from "@/types/api";
 import type { LocalScoreEntry } from "@/types/game";
 import { rankScores } from "@/utils/leaderboard";
 
-type LeaderboardScope = "global" | "local";
+export type LeaderboardScope = "global" | "local";
 
-export default function GameLeaderboards() {
+type LeaderboardProps = {
+	scope: LeaderboardScope;
+	currentMode: string;
+	onlineScores: LeaderboardScore[] | null;
+};
+
+export default function Leaderboard({ scope, currentMode, onlineScores }: LeaderboardProps) {
 	const [localScoreHistory] = useLocalStorageState<LocalScoreEntry[]>("localScoreHistory", {
 		defaultValue: [],
 	});
 	const [isObsoleteVisible, setIsObsoleteVisible] = useState(false);
 
-	const router = useRouter();
-
-	const scope: LeaderboardScope = router.query.scope === "local" ? "local" : "global";
-	const currentMode = typeof router.query.mode === "string" ? router.query.mode : "30s";
-
 	const isLocal = scope === "local";
-	const {
-		data: onlineScores,
-		isLoading: scoresLoading,
-		error: scoresError,
-	} = useSWR<LeaderboardScore[]>(
-		isLocal ? null : `/api/scores?${new URLSearchParams({ mode: currentMode }).toString()}`,
-	);
-
 	const localScores = localScoreHistory
 		.filter((entry) => entry.isHighscore && entry.mode === currentMode)
 		.sort((a, b) => b.score - a.score);
 	const leaderboard = rankScores(onlineScores ?? []);
 
 	const scoreCount = isLocal ? localScores.length : leaderboard.length;
-	const isLoading = !isLocal && scoresLoading;
-	const hasError = !isLocal && Boolean(scoresError);
+	const hasError = !isLocal && onlineScores === null;
 
 	function buildUrl(newParams: { mode?: string; scope?: LeaderboardScope }) {
 		const current = {
@@ -71,9 +62,6 @@ export default function GameLeaderboards() {
 
 	return (
 		<>
-			<Head>
-				<title>Leaderboards</title>
-			</Head>
 			<StyledTextpageHeader>
 				<StyledBackLink href="/">&lt;</StyledBackLink>
 				<h1>Leaderboards</h1>
@@ -119,11 +107,7 @@ export default function GameLeaderboards() {
 						))}
 					</StyledButtonList>
 				</StyledTextpageButtonListWrap>
-				{isLoading ? (
-					<StyledTextpageSection>
-						<p>Loading scores...</p>
-					</StyledTextpageSection>
-				) : hasError ? (
+				{hasError ? (
 					<StyledTextpageSection>
 						<p>Scores could not be loaded.</p>
 					</StyledTextpageSection>
