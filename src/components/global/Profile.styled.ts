@@ -35,3 +35,7 @@ export const StyledProfileDataImage = styled(Image)`
 	border-radius: 50%;
 	border: var(--border-small-lighter);
 `;
+
+export const StyledProfileActions = styled.div`
+	margin-left: auto;
+`;
