@@ -9,8 +9,6 @@ if (dnsServers?.length) {
 	dns.setServers(dnsServers);
 }
 
-const MONGODB_URI = requireEnv("MONGODB_URI");
-
 const cached = (globalThis.mongooseCache ??= { conn: null, promise: null });
 
 export default async function dbConnect(): Promise<Mongoose> {
@@ -18,7 +16,7 @@ export default async function dbConnect(): Promise<Mongoose> {
 		return cached.conn;
 	}
 
-	cached.promise ??= mongoose.connect(MONGODB_URI, { bufferCommands: false });
+	cached.promise ??= mongoose.connect(requireEnv("MONGODB_URI"), { bufferCommands: false });
 
 	try {
 		cached.conn = await cached.promise;
