@@ -6,7 +6,11 @@ import {
 	StyledTextpageHeader,
 	StyledTextpageSection,
 } from "@/components/global/Global.styled";
-import { StyledProfileDataImage, StyledProfileDataWrap } from "@/components/global/Profile.styled";
+import {
+	StyledProfileActions,
+	StyledProfileDataImage,
+	StyledProfileDataWrap,
+} from "@/components/global/Profile.styled";
 import ProfileRecords from "@/components/ProfileRecords";
 import SignOutButton from "@/components/SignOutButton";
 import { getSession } from "@/lib/auth";
@@ -56,7 +60,11 @@ export default async function ProfilePage({ params, searchParams }: PageProps<"/
 									/>
 								)}
 								<h2>{profile.user.name}</h2>
-								{isOwnProfile && <SignOutButton />}
+								{isOwnProfile && (
+									<StyledProfileActions>
+										<SignOutButton />
+									</StyledProfileActions>
+								)}
 							</StyledProfileDataWrap>
 						</StyledTextpageSection>
 						<ProfileRecords userId={userId} scores={profile.scores} />
