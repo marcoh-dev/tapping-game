@@ -21,6 +21,7 @@ export default function Game({ mode, isSignedIn }) {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isGameMenuOpen, setIsGameMenuOpen] = useState(false);
   const [databaseHighscore, setDatabaseHighscore] = useState(0);
+  const [isHighscoreBeaten, setIsHighscoreBeaten] = useState(false);
   const [localScoreHistory, setLocalScoreHistory] = useLocalStorageState(
     "localScoreHistory",
     {
@@ -40,23 +41,21 @@ export default function Game({ mode, isSignedIn }) {
 
   const highscore = isSignedIn ? databaseHighscore : localHighscore;
 
-  async function getHighscore() {
-    try {
-      const response = await fetch(`/api/scores/best?mode=${mode.id}`);
-      const data = await response.json();
-      setDatabaseHighscore(data?.score ?? 0);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
   useEffect(() => {
     if (!isSignedIn) return;
 
-    getHighscore();
-  }, [isSignedIn, databaseHighscore, highscore]);
+    async function getHighscore() {
+      try {
+        const response = await fetch(`/api/scores/best?mode=${mode.id}`);
+        const data = await response.json();
+        setDatabaseHighscore(data?.score ?? 0);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  const [displayedHighscore, setDisplayedHighscore] = useState(0);
+    getHighscore();
+  }, [isSignedIn, mode.id]);
 
   function handleTargetClick(increment) {
     setScore((prev) => prev + increment);
@@ -70,9 +69,7 @@ export default function Game({ mode, isSignedIn }) {
     setIsGameMenuOpen(false);
     if (score > 0) {
       const isHighscoreBeaten = score > highscore;
-      if (isHighscoreBeaten) {
-        setDatabaseHighscore();
-      }
+      setIsHighscoreBeaten(isHighscoreBeaten);
 
       if (isSignedIn) {
         const result = await handleScoreCreate({
@@ -80,6 +77,9 @@ export default function Game({ mode, isSignedIn }) {
           mode: mode.id,
           isHighscore: isHighscoreBeaten,
         });
+        if (result && isHighscoreBeaten) {
+          setDatabaseHighscore(score);
+        }
       } else {
         setLocalScoreHistory((prev) => [
           ...prev,
@@ -105,7 +105,7 @@ export default function Game({ mode, isSignedIn }) {
     setIsCountdown(true);
     setIsGameMenuOpen(false);
     setIsGameOver(false);
-    setDisplayedHighscore(highscore);
+    setIsHighscoreBeaten(false);
     setScore(0);
   }
 
@@ -183,7 +183,7 @@ export default function Game({ mode, isSignedIn }) {
             score={score}
             highscore={highscore}
             onGameRestart={handleGameRestart}
-            isHighscoreBeaten={score > displayedHighscore}
+            isHighscoreBeaten={isHighscoreBeaten}
           />
         )}
       </StyledGameBody>
