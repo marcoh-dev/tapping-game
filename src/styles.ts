@@ -120,7 +120,7 @@ body {
 
 }
 
-#__next {
+#app {
 	display: flex;
 	flex-direction: column;
 	flex-grow: 1;

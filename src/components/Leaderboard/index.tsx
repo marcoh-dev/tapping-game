@@ -1,10 +1,10 @@
-import Head from "next/head";
+"use client";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import useSWR from "swr";
 import useLocalStorageState from "use-local-storage-state";
 
+import FormattedDate from "@/components/FormattedDate";
 import { StyledButton, StyledButtonList } from "@/components/global/Buttons.styled";
 import {
 	StyledBackLink,
@@ -28,36 +28,30 @@ import type { LeaderboardScore } from "@/types/api";
 import type { LocalScoreEntry } from "@/types/game";
 import { rankScores } from "@/utils/leaderboard";
 
-type LeaderboardScope = "global" | "local";
+const EAGER_IMAGE_ROWS = 5;
 
-export default function GameLeaderboards() {
+export type LeaderboardScope = "global" | "local";
+
+type LeaderboardProps = {
+	scope: LeaderboardScope;
+	currentMode: string;
+	onlineScores: LeaderboardScore[] | null;
+};
+
+export default function Leaderboard({ scope, currentMode, onlineScores }: LeaderboardProps) {
 	const [localScoreHistory] = useLocalStorageState<LocalScoreEntry[]>("localScoreHistory", {
 		defaultValue: [],
 	});
 	const [isObsoleteVisible, setIsObsoleteVisible] = useState(false);
 
-	const router = useRouter();
-
-	const scope: LeaderboardScope = router.query.scope === "local" ? "local" : "global";
-	const currentMode = typeof router.query.mode === "string" ? router.query.mode : "30s";
-
 	const isLocal = scope === "local";
-	const {
-		data: onlineScores,
-		isLoading: scoresLoading,
-		error: scoresError,
-	} = useSWR<LeaderboardScore[]>(
-		isLocal ? null : `/api/scores?${new URLSearchParams({ mode: currentMode }).toString()}`,
-	);
-
 	const localScores = localScoreHistory
 		.filter((entry) => entry.isHighscore && entry.mode === currentMode)
 		.sort((a, b) => b.score - a.score);
 	const leaderboard = rankScores(onlineScores ?? []);
 
 	const scoreCount = isLocal ? localScores.length : leaderboard.length;
-	const isLoading = !isLocal && scoresLoading;
-	const hasError = !isLocal && Boolean(scoresError);
+	const hasError = !isLocal && onlineScores === null;
 
 	function buildUrl(newParams: { mode?: string; scope?: LeaderboardScope }) {
 		const current = {
@@ -71,9 +65,6 @@ export default function GameLeaderboards() {
 
 	return (
 		<>
-			<Head>
-				<title>Leaderboards</title>
-			</Head>
 			<StyledTextpageHeader>
 				<StyledBackLink href="/">&lt;</StyledBackLink>
 				<h1>Leaderboards</h1>
@@ -119,11 +110,7 @@ export default function GameLeaderboards() {
 						))}
 					</StyledButtonList>
 				</StyledTextpageButtonListWrap>
-				{isLoading ? (
-					<StyledTextpageSection>
-						<p>Loading scores...</p>
-					</StyledTextpageSection>
-				) : hasError ? (
+				{hasError ? (
 					<StyledTextpageSection>
 						<p>Scores could not be loaded.</p>
 					</StyledTextpageSection>
@@ -145,7 +132,7 @@ export default function GameLeaderboards() {
 									<StyledLeaderboardCell>{index + 1}.</StyledLeaderboardCell>
 									<StyledLeaderboardCell>{entry.score}</StyledLeaderboardCell>
 									<StyledLeaderboardCell>
-										{new Date(entry.timestamp).toLocaleString()}
+										<FormattedDate date={entry.timestamp} />
 									</StyledLeaderboardCell>
 								</StyledLeaderboardBodyRow>
 							))}
@@ -162,7 +149,7 @@ export default function GameLeaderboards() {
 						<StyledLeaderboardBody>
 							{leaderboard
 								.filter((entry) => isObsoleteVisible || !entry.isObsolete)
-								.map((entry) => (
+								.map((entry, index) => (
 									<StyledLeaderboardBodyRow key={entry._id}>
 										<StyledLeaderboardCell>
 											{entry.rank && `${entry.rank}.`}
@@ -170,6 +157,9 @@ export default function GameLeaderboards() {
 										<StyledLeaderboardCell $isObsolete={entry.isObsolete}>
 											{entry.user.image && (
 												<StyledLeaderboardProfileImage
+													loading={
+														index < EAGER_IMAGE_ROWS ? "eager" : "lazy"
+													}
 													width={100}
 													height={100}
 													src={entry.user.image}
@@ -187,7 +177,7 @@ export default function GameLeaderboards() {
 											{entry.score}
 										</StyledLeaderboardCell>
 										<StyledLeaderboardCell $isObsolete={entry.isObsolete}>
-											{new Date(entry.createdAt).toLocaleString()}
+											<FormattedDate date={entry.createdAt} />
 										</StyledLeaderboardCell>
 									</StyledLeaderboardBodyRow>
 								))}
