@@ -22,7 +22,7 @@ import {
 	StyledLeaderboardProfileImage,
 	StyledLeaderboardWrap,
 } from "@/components/global/Leaderboard.styled";
-import ProfileIcon from "@/icons/profile.svg";
+import ProfileIcon from "@/components/icons/ProfileIcon";
 import { ACTIVE_GAME_MODES } from "@/lib/gameModes";
 import type { LeaderboardScore } from "@/types/api";
 import type { LocalScoreEntry } from "@/types/game";

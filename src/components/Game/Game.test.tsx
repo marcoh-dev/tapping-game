@@ -5,8 +5,6 @@ import Game from "@/components/Game";
 import { getGameMode } from "@/lib/gameModes";
 
 vi.mock("@/app/actions", () => ({ saveScore: vi.fn() }));
-vi.mock("@/icons/menu-open.svg", () => ({ default: () => null }));
-vi.mock("@/icons/menu-close.svg", () => ({ default: () => null }));
 
 function advance(ms: number) {
 	for (let elapsed = 0; elapsed < ms; elapsed += 100) {
