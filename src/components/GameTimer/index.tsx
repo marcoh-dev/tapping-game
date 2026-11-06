@@ -1,0 +1,70 @@
+import { useEffect, useState } from "react";
+
+import type { GameMode } from "@/types/game";
+
+import { StyledGameTimerSecond, StyledGameTimerSection } from "./GameTimer.styled";
+
+type GameTimerProps = {
+	mode: GameMode;
+	isCountdown: boolean;
+	isGameOver: boolean;
+	onTimerComplete: (isGameOver: boolean) => void;
+};
+
+export default function GameTimer({
+	mode,
+	isCountdown,
+	isGameOver,
+	onTimerComplete,
+}: GameTimerProps) {
+	const isInfinite = mode.type === "points";
+	const duration = mode.time;
+
+	const [time, setTime] = useState(isInfinite ? 0 : duration * 1000);
+
+	useEffect(() => {
+		setTime(isInfinite ? 0 : duration * 1000);
+	}, [isInfinite, duration]);
+
+	useEffect(() => {
+		if (isCountdown || isGameOver) return;
+
+		const startTime = Date.now();
+		const endTime = startTime + duration * 1000;
+
+		const interval = setInterval(() => {
+			if (isInfinite) {
+				setTime(Date.now() - startTime);
+			} else {
+				const remainingTime = Math.max(0, endTime - Date.now());
+
+				setTime(remainingTime);
+
+				if (remainingTime === 0) {
+					clearInterval(interval);
+					onTimerComplete(true);
+				}
+			}
+		}, 32);
+
+		return () => clearInterval(interval);
+	}, [duration, isInfinite, isCountdown, isGameOver, onTimerComplete]);
+
+	const seconds = Math.floor(time / 1000);
+	const milliseconds = time % 1000;
+
+	return (
+		<StyledGameTimerSection $isLastFiveSeconds={!isInfinite && time <= 5000}>
+			{isCountdown ? (
+				<span>
+					<StyledGameTimerSecond>{duration}</StyledGameTimerSecond>
+				</span>
+			) : (
+				<span>
+					<StyledGameTimerSecond>{seconds}</StyledGameTimerSecond>,
+					{milliseconds.toString().padStart(3, "0")}
+				</span>
+			)}
+		</StyledGameTimerSection>
+	);
+}

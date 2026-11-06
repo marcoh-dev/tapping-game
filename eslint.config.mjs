@@ -1,16 +1,42 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
-import jest from "eslint-plugin-jest";
+import nextTs from "eslint-config-next/typescript";
+import prettier from "eslint-config-prettier/flat";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 
 export default defineConfig([
-  ...nextVitals,
-  jest.configs["flat/recommended"],
-  {
-    rules: {
-      "import/no-anonymous-default-export": ["error", { allowObject: true }],
-      "react-hooks/set-state-in-effect": "warn",
-      "react-hooks/immutability": "warn",
-    },
-  },
-  globalIgnores([".next/**", "node_modules/**"]),
+	...nextVitals,
+	...nextTs,
+	prettier,
+	{
+		languageOptions: { parserOptions: { jsxPragma: null } },
+		rules: {
+			...jsxA11y.flatConfigs.recommended.rules,
+			"import/order": [
+				"error",
+				{
+					groups: [["builtin", "external"], "internal", ["parent", "sibling", "index"]],
+					pathGroups: [{ pattern: "@/**", group: "internal" }],
+					"newlines-between": "always",
+					alphabetize: { order: "asc", caseInsensitive: true },
+					named: true,
+				},
+			],
+			"import/no-duplicates": "error",
+			"import/no-anonymous-default-export": ["error", { allowObject: true }],
+			"no-restricted-imports": [
+				"error",
+				{ patterns: [{ regex: "(^|/)\\.\\./", message: 'Use "@/…" instead of "../".' }] },
+			],
+			"react/jsx-uses-react": "off",
+			"react-hooks/set-state-in-effect": "warn",
+			"react-hooks/immutability": "warn",
+			"@typescript-eslint/no-explicit-any": "error",
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ vars: "all", args: "none", ignoreRestSiblings: true, caughtErrors: "all" },
+			],
+		},
+	},
+	globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
 ]);
