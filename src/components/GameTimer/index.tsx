@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 import type { GameMode } from "@/types/game";
 
@@ -8,7 +8,7 @@ type GameTimerProps = {
 	mode: GameMode;
 	isCountdown: boolean;
 	isGameOver: boolean;
-	onTimerComplete: (isGameOver: boolean) => void;
+	onTimerComplete: () => void;
 };
 
 export default function GameTimer({
@@ -22,9 +22,7 @@ export default function GameTimer({
 
 	const [time, setTime] = useState(isInfinite ? 0 : duration * 1000);
 
-	useEffect(() => {
-		setTime(isInfinite ? 0 : duration * 1000);
-	}, [isInfinite, duration]);
+	const completeTimer = useEffectEvent(onTimerComplete);
 
 	useEffect(() => {
 		if (isCountdown || isGameOver) return;
@@ -42,13 +40,13 @@ export default function GameTimer({
 
 				if (remainingTime === 0) {
 					clearInterval(interval);
-					onTimerComplete(true);
+					completeTimer();
 				}
 			}
 		}, 32);
 
 		return () => clearInterval(interval);
-	}, [duration, isInfinite, isCountdown, isGameOver, onTimerComplete]);
+	}, [duration, isInfinite, isCountdown, isGameOver]);
 
 	const seconds = Math.floor(time / 1000);
 	const milliseconds = time % 1000;
